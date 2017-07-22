@@ -12,6 +12,7 @@
 *.iws
 *.swp
 *~
+.jar
 .classpath
 .project
 .ant-targets-build.xml

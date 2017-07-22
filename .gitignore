@@ -12,6 +12,8 @@
 *.iws
 *.swp
 *~
+.classpath
+.project
 .ant-targets-build.xml
 .ant_targets
 .gh.json

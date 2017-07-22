@@ -3,6 +3,7 @@ This is an extension used to assist in the upgrade from 6.1 to 6.2 enterprise ed
 1. portal-ext.properties
 2. VerifyProcessSuite.java
 3. UpgradeProcess_6_2_0.java
+4. UpgradeProcess
 
 This extension serves two purposes.  Firstly, it adds custom logging to the upgrade process by printing a line to the log file before and after each
 component is upgrade.  Additionally, it removes the verify process for the document library.  During our upgrade from Liferay 6.1 EE to Liferay 6.2 EE
@@ -43,3 +44,6 @@ the following line.
 We extend UpgradeProcess_6_2_0 with CustomUpgradeProcess_6_2_0.  In our custom file we add additional logging
 
     verify(new VerifyDocumentLibrary());
+    
+### UpgradeProcess
+We extend UpgradeProcess with CustomUpgradeDocumentLibrary.  Additionally logging is added

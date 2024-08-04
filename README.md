@@ -1,15 +1,17 @@
-# About
-This is an extension used to assist in the upgrade from 6.1 to 6.2 enterprise edition.  The extension extends the following files.
-1. portal-ext.properties
-2. VerifyProcessSuite.java
-3. UpgradeProcess_6_2_0.java
-4. UpgradeProcess
+## Background
+This is a Liferay Extension used to bypass an uncaught exception during Liferay's Document Library Verification Step in the 6.1 to 6.2 EE Upgrade path.  This issue affected most Liferay 6.1 EE customers who were using Liferay's Simple File Storage System for their DocLib implementation.  If you are overriding `dl.store.impl` to use any other implementation than you are likely unaffected.
 
-This extension serves two purposes.  Firstly, it adds custom logging to the upgrade process by printing a line to the log file before and after each
-component is upgrade.  Additionally, it removes the verify process for the document library.  During our upgrade from Liferay 6.1 EE to Liferay 6.2 EE
-we ran into an issue VerifyDocumentLibrary(). A query was executed during this process that ran for weeks without ending. After repeated attempts to utilize 
-our Liferay platinum partners and our gold support through Liferay we were provided with no solution to our issue.  We have a 4 terabyte document library
-that is based off the default system library backend.
+There are two changes introduced by this Extension:
+- Firstly the extension outright bypasses the Document Library Post-upgrade verification step.  It does *not* bypass the Document Library upgrade.  It only bypasses the subsequent verification process
+- It adds enhanced logging to the Document Library upgrade process in an effort to identify a root cause for the subsequent verification failures
+
+The extension extends the following files:
+- portal-ext.properties
+- VerifyProcessSuite.java
+- UpgradeProcess_6_2_0.java
+- UpgradeProcess
+
+Most noteably it removes the invocation of the `VerifyDocumentLibrary()` method by introducing a CustomVerifyProcessSuite class with a specially crafted fully qualified class name that overrides the VerifyProcessSuite class through a Liferay convention-over-configuration Extension pattern.  This pattern is loosely described [here](https://help.liferay.com/hc/en-us/articles/360018181211-Advanced-Customization-with-Ext-Plugins).
 
 # Deploying
 First open your portals override properties file.  It can be any one of the following files.
@@ -29,7 +31,7 @@ Java application server or container and start the server.  Once the server has 
 in the log file.  Shut down the server and remove the verify.frequency property.  The next time you start your server for the upgrade the
 extension will execute
 
-# Files
+## Overview of Changes
 ### portal-ext.properties
 This file points the following two properties to our CustomUpgradeProcess_6_2_0.java and CustomVerifyProcessSuite.java files respectively.
 
